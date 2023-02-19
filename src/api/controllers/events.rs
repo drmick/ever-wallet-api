@@ -102,3 +102,17 @@ pub async fn get_events_id(
 
     Ok(Json(TransactionEventResponse::from(event)))
 }
+
+pub async fn get_next_event(
+    Extension(ctx): Extension<Arc<ApiContext>>,
+    IdExtractor(service_id): IdExtractor,
+) -> Result<Json<TransactionEventResponse>> {
+    let event = ctx
+        .ton_service
+        .get_next_event(&service_id)
+        .await
+        .map(From::from);
+
+
+    Ok(Json(TransactionEventResponse::from(event)))
+}

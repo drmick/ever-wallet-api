@@ -11,4 +11,5 @@ pub fn router() -> Router {
         .route("/mark", post(controllers::post_events_mark))
         .route("/mark/all", post(controllers::post_events_mark_all))
         .route("/id/:id", get(controllers::get_events_id))
+        .route("/next", get(controllers::get_next_event))
 }
