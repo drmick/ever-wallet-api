@@ -100,6 +100,12 @@ pub struct TransactionEventDb {
 }
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, Eq, PartialEq)]
+pub struct TransactionHashEventIdDb {
+    pub event_id: Uuid,
+    pub transaction_hash: String,
+}
+
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize, Eq, PartialEq)]
 pub struct TokenBalanceFromDb {
     pub service_id: ServiceId,
     pub account_workchain_id: i32,

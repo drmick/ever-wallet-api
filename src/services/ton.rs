@@ -414,7 +414,7 @@ impl TonService {
     pub async fn get_next_event(
         &self,
         service_id: &ServiceId,
-    ) -> Result<TransactionEventDb, Error> {
+    ) -> Result<Option<TransactionHashEventIdDb>, Error> {
         let event = self.sqlx_client.get_next_event(*service_id).await?;
         Ok(event)
     }

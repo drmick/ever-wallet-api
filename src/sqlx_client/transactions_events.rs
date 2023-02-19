@@ -209,34 +209,23 @@ impl SqlxClient {
     pub async fn get_next_event(
         &self,
         service_id: ServiceId,
-    ) -> Result<TransactionEventDb> {
+    ) -> Result<Option<TransactionHashEventIdDb>, sqlx::Error> {
         sqlx::query_as!(
-            TransactionEventDb,
+            TransactionHashEventIdDb,
             r#"
-            SELECT id,
-                service_id as "service_id: _",
-                transaction_id,
-                message_hash,
-                account_workchain_id,
-                account_hex,
-                sender_workchain_id,
-                sender_hex,
-                balance_change,
-                transaction_direction as "transaction_direction: _",
-                transaction_status as "transaction_status: _",
-                event_status as "event_status: _",
-                multisig_transaction_id,
-                created_at,
-                updated_at
-            FROM transaction_events
-            WHERE service_id = $1
-            and event_status = 'New'
-            order by created_at limit 1"#,
+                SELECT t.transaction_hash as "transaction_hash!", e.id as "event_id!"
+                FROM transaction_events e
+                         join transactions t
+                              on t.id = e.transaction_id
+                WHERE e.service_id = $1
+                  and e.event_status = 'New'
+                order by e.created_at
+                limit 1
+            "#,
             service_id as ServiceId,
         )
-            .fetch_one(&self.pool)
-            .await
-            .map_err(From::from)
+        .fetch_optional(&self.pool)
+        .await
     }
 
     pub async fn get_all_transaction_events(

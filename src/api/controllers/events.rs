@@ -103,16 +103,17 @@ pub async fn get_events_id(
     Ok(Json(TransactionEventResponse::from(event)))
 }
 
-pub async fn get_next_event(
+pub async fn get_next_event_transaction(
     Extension(ctx): Extension<Arc<ApiContext>>,
     IdExtractor(service_id): IdExtractor,
-) -> Result<Json<TransactionEventResponse>> {
-    let event = ctx
-        .ton_service
-        .get_next_event(&service_id)
-        .await
-        .map(From::from);
+) -> Result<Json<TransactionHashEventIdResponse>, StatusCode> {
+    let event = ctx.ton_service.get_next_event(&service_id).await;
 
-
-    Ok(Json(TransactionEventResponse::from(event)))
+    match event {
+        Ok(event) => Ok(Json(TransactionHashEventIdResponse::from(event))),
+        Err(e) => {
+            log::error!("{e:?}");
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
+    }
 }

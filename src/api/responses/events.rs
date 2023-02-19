@@ -158,3 +158,15 @@ impl From<Result<AccountTransactionEvent, Error>> for TransactionEventResponse {
         }
     }
 }
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TransactionHashEventIdResponse {
+    pub data: Option<TransactionHashEventIdDb>,
+}
+
+impl From<Option<TransactionHashEventIdDb>> for TransactionHashEventIdResponse {
+    fn from(r: Option<TransactionHashEventIdDb>) -> Self {
+        Self { data: r }
+    }
+}
