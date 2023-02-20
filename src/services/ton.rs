@@ -986,8 +986,8 @@ impl TonService {
             transaction.account_hex.clone(),
             transaction.account_workchain_id,
             signed_message,
-            true,
             false,
+            true,
         )
         .await?;
 
