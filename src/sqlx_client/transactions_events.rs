@@ -213,7 +213,7 @@ impl SqlxClient {
         sqlx::query_as!(
             TransactionHashEventIdDb,
             r#"
-                SELECT t.transaction_hash as "transaction_hash!", e.id as "event_id!"
+                SELECT t.transaction_hash as "transaction_hash!", e.id as "event_id!", e.sender_hex
                 FROM transaction_events e
                          join transactions t
                               on t.id = e.transaction_id

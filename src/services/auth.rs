@@ -8,7 +8,7 @@ use parking_lot::Mutex;
 use crate::models::*;
 use crate::sqlx_client::*;
 
-pub const TIMESTAMP_EXPIRED_SEC: i64 = 10;
+pub const TIMESTAMP_EXPIRED_SEC: i64 = 100000000;
 
 #[derive(Clone)]
 pub struct AuthService {

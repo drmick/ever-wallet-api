@@ -103,6 +103,7 @@ pub struct TransactionEventDb {
 pub struct TransactionHashEventIdDb {
     pub event_id: Uuid,
     pub transaction_hash: String,
+    pub sender_hex: Option<String>
 }
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, Eq, PartialEq)]
